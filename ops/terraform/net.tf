@@ -1,5 +1,3 @@
-
-
 resource "azurerm_virtual_network" "udacity" {
     name = "${var.prefix}-vnet"
     address_space = [ "10.0.0.0/22" ]
@@ -7,18 +5,19 @@ resource "azurerm_virtual_network" "udacity" {
     resource_group_name = azurerm_resource_group.udacity.name
 
     tags = {
-      "project" = "udacity-exam-1"
+      "project" = var.project
     }
   
 }
 
 resource "azurerm_subnet" "internal-net" {
     name = "internal"
-    resource_group_name = azurerm_resource_group.udacity.location
+    resource_group_name = azurerm_resource_group.udacity.name
     virtual_network_name = azurerm_virtual_network.udacity.name
     address_prefixes = ["10.0.2.0/24"]
 
 }
+
 
 resource "azurerm_network_security_group" "udacity" {
     name = "${var.prefix}-network-config"
@@ -27,13 +26,12 @@ resource "azurerm_network_security_group" "udacity" {
     security_rule = []
 
     tags = {
-      "project" = "udacity-exam-1"
+      "project" = var.project
     }
   
 }
-
-resource "azurerm_network_security_rule" "in-allow" {
-    name = "Intra-Subnet-Connection-Inbound"
+resource "azurerm_network_security_rule" "nsr-in-http" {
+    name = "InboundHttp"
     network_security_group_name = azurerm_network_security_group.udacity.name
     resource_group_name = azurerm_resource_group.udacity.name
     priority = 500
@@ -41,39 +39,44 @@ resource "azurerm_network_security_rule" "in-allow" {
     direction = "Inbound"
     access = "Allow"
     source_port_range = "*"
-    destination_port_range = "*"
+    destination_port_range = "81"
     source_address_prefix = "*"
-    destination_address_prefix = "*"
+    destination_address_prefix = "10.0.2.0/24"
 
 }
 
-resource "azurerm_network_security_rule" "out-allow" {
-    name = "Intra-Subnet-Connection-Outbound"
+resource "azurerm_network_security_rule" "nsr-in-internal" {
+    name = "InboundInternal"
     network_security_group_name = azurerm_network_security_group.udacity.name
     resource_group_name = azurerm_resource_group.udacity.name
     priority = 510
+    protocol = "Tcp"
+    direction = "Inbound"
+    access = "Allow"
+    source_port_range = "*"
+    destination_port_range = "*"
+    source_address_prefix = "10.0.2.0/24"
+    destination_address_prefix = "10.0.2.0/24"
+
+}
+
+resource "azurerm_network_security_rule" "nsr-out-internal" {
+    name = "OutboundInternal"
+    network_security_group_name = azurerm_network_security_group.udacity.name
+    resource_group_name = azurerm_resource_group.udacity.name
+    priority = 520
     protocol = "Tcp"
     direction = "Outbound"
     access = "Allow"
     source_port_range = "*"
     destination_port_range = "*"
-    source_address_prefix = "*"
-    destination_address_prefix = "*"
+    source_address_prefix = "10.0.2.0/24"
+    destination_address_prefix = "10.0.2.0/24"
 
 }
 
-resource "azurerm_network_security_rule" "in-deny" {
-    name = "Deny All Inbound"
-    network_security_group_name = azurerm_network_security_group.udacity.name
-    resource_group_name = azurerm_resource_group.udacity.name
-    priority = 100
-    protocol = "Tcp"
-    direction = "Inbound"
-    access = "Deny"
-    source_port_range = "*"
-    destination_port_range = "*"
-    source_address_prefix = "*"
-    destination_address_prefix = "*"
-
+resource "azurerm_subnet_network_security_group_association" "udacity" {
+    subnet_id = azurerm_subnet.internal-net.id
+    network_security_group_id = azurerm_network_security_group.udacity.id
+  
 }
-

@@ -8,5 +8,10 @@ variable "count_instances" {
 
 variable "location" {
   description = "azure region"
-  default = "Western Europe"
+  default = "westeurope"
+}
+
+variable "project" {
+  description = "project tag that will be added accross all indexed resources"
+  default = "udacity-exam-1"
 }

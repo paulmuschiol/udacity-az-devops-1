@@ -3,6 +3,10 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "udacity" {
-  name     = "${var.prefix}-resources"
+  name     = "${var.prefix}-rg"
   location = var.location
+
+  tags = {
+    "project" = var.project
+  }
 }
