@@ -1,2 +1,5 @@
 ops/terraform/.terraform/
 ops/terraform/myimageid
+*.lock.hcl
+*.tfstate
+*.tfstate.backup
