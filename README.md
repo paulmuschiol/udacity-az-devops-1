@@ -27,7 +27,7 @@ For this project, you will write a Packer template and a Terraform template to d
 1. navigate to packer file directory 'image_build'
 2. decide on authentication option for packer. Easiest way is to use device authentication. For this you only need to provide a subscription id (will be used in below step). Alternatively you can go for AAD interactive login, Azure Managed Identity, AAD Service Principal or Azure CLI. For details please refer to official [docs](https://www.packer.io/docs/builders/azure).
 3. Ensure you have a resource group setup in Azure you want to save the image to.
-4. build your packer image by 'packer build -var=subscription_id=YOUR_SUBSCRIPTION_ID -var=rg=RESOURCE_GROUP -var=image_name=IMAGE_NAME packer_image.json'.
+4. build your packer image by 'packer build -var=subscription_id=YOUR_SUBSCRIPTION_ID -var=rg=RESOURCE_GROUP -var=image_name=IMAGE_NAME server.json'.
 5. Verify your build image in the Azure CLI by 'az image list -g RESOURCE_GROUP'. Copy the value in "id" for your image as we need this for deployment later.
 
 #### Deploy your infrastructure
