@@ -16,8 +16,8 @@
       "image_offer": "UbuntuServer",
       "image_sku": "18.04-LTS",
   
-      "managed_image_resource_group_name": "pmu-udacity",
-      "managed_image_name": "udacity-first-exam-18",
+      "managed_image_resource_group_name": "{{user `rg`}}",
+      "managed_image_name": "{{user `image_name`}}",
 
       "ssh_username": "azureuser",
   

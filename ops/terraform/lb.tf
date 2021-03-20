@@ -10,6 +10,19 @@ resource "azurerm_public_ip" "udacity" {
     }
 }
 
+output "lb_ip_address" {
+    value = azurerm_public_ip.udacity.ip_address
+    description = "public IP address of LB"
+  
+}
+
+output "lb_fqdn" {
+    value = azurerm_public_ip.udacity.fqdn
+    description = "public fqdn of LB"
+  
+}
+
+
 resource "azurerm_lb" "udacity" {
     name = "${var.prefix}-lb"
     location = azurerm_resource_group.udacity.location

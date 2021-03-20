@@ -49,7 +49,7 @@ resource "azurerm_linux_virtual_machine" "udacity" {
     availability_set_id = azurerm_availability_set.udacity.id
     network_interface_ids = [ element(azurerm_network_interface.udacity-vm-nic.*.id, count.index) ]
     disable_password_authentication = true
-    source_image_id = "/subscriptions/0c34b9c6-2ea6-4fdf-9469-2300dc7a349b/resourceGroups/PMU-UDACITY/providers/Microsoft.Compute/images/udacity-first-exam-18"
+    source_image_id = var.image_id
     admin_username = "azureuser"
 
     os_disk {
