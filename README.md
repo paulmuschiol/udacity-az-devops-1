@@ -5,10 +5,10 @@ For this project, you will write a Packer template and a Terraform template to d
 
 ### Getting Started
 1. Clone this repository
-
-2. Create your infrastructure as code
-
-3. Update this README to reflect how someone would use your code.
+2. Get some orientation on the files
+* 'image_build' contains files for the packer image
+* 'ops' contains all infranstructure deployment code
+3. Verify installation of below dependencies, collect your azure subscription id from the portal or CLI and start with the instructions below.
 
 ### Dependencies
 1. Create an [Azure Account](https://portal.azure.com) 
@@ -49,7 +49,8 @@ You get a build packer image in the specified resource group with the specified 
 Be aware that packer is stateless and you must delete the image manually to avoid costs for storage. 
 
 #### LB Deployment
-You get a loadbalanced application that serves the build packer image with the simple web page. This can be accessed through the output FQDN or IP of the load balance in front. All resources are tagged with the project value. The build infrastructure should look high level like this:
+You get a loadbalanced application that serves the build packer image with the simple web page. This can be accessed through the output FQDN or IP of the load balance in front. All resources are tagged with the project value. You can even after deployment increase the number of nodes in the variables.tf file and apply again to scale the application.
+The build infrastructure should look high level like this:
 1. Resource Group hosting all elements
 2. Load Balancer
 * Azure load balancer with a public IP and FQDN
